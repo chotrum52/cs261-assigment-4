@@ -220,10 +220,8 @@ class BST:
             second_indicator = True
         if second_indicator is True:
             replace_parent.left = replace_node.right
-            return True
         if second_indicator is False:
             replace_parent.right = replace_node.right
-            return True
         if first_indicator is True:
             the_parent.left = replace_node
             replace_node.left = the_victim.left
@@ -335,8 +333,8 @@ class BST:
 
 if __name__ == '__main__':
 
-    tree = BST([7, 5, 12, 18, 18, 22, 24, 22, 30, 27, 20, 100])
-    print(tree.remove(20))
+    tree = BST(["IZ", "D", "GP", "GP", "ZL", "KM", "TQ", "Y"])
+    print(tree.remove("D"))
     print(tree)
 
     """ Traversal methods example 1 """
