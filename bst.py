@@ -230,7 +230,7 @@ class BST:
             parent_node.right = replace_node
             replace_node.left = remove_node.left
             replace_node.right = remove_node.right
-            return True
+        return True
 
 
     def remove_first(self) -> bool:
