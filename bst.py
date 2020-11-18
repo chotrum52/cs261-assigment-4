@@ -174,7 +174,6 @@ class BST:
         else:  # Else return None as the BinaryTree is empty.
             return None
 
-
     def remove(self, value) -> bool:
         """
         Remove the first instance of the object in the BinaryTree.
@@ -199,10 +198,10 @@ class BST:
         if remove_node == self.root:  # If the value is a root.
             self.remove_first()
             return True
-        if self.root.left is None and self.root.right is None and left_right:  # If the value is a leaf.
+        if remove_node.left is None and remove_node.right is None and left_right is True:  # If the value is a leaf.
             parent_node.left = None
             return True
-        if self.root.left is None and self.root.right is None and not left_right:  # If the value is a leaf.
+        if remove_node.left is None and remove_node.right is None and left_right is False:  # If the value is a leaf.
             parent_node.right = None
             return True
         if remove_node.right is None and left_right:  # Removing from when only a left.
@@ -213,25 +212,26 @@ class BST:
             return True
         replace_node = remove_node.right
         replace_parent = remove_node
-        left_right = False  # Resets left_right node.
+        right_left = False  # Resets right_left node.
         while replace_node.left is not None:  # Removing from when right subtree.
             replace_parent = replace_node
             replace_node = replace_node.left
-            left_right = True
-        if left_right is False:
+            right_left = True
+        if right_left is False:
             replace_parent.right = replace_node.right
-        if left_right:
+        if right_left:
             replace_parent.left = replace_node.right
-        if left_right is False:
-            parent_node.right = replace_node
-            replace_node.left = remove_node.left
-            replace_node.right = remove_node.right
-            return True
         if left_right:
             parent_node.left = replace_node
             replace_node.left = remove_node.left
             replace_node.right = remove_node.right
             return True
+        if left_right:
+            parent_node.right = replace_node
+            replace_node.left = remove_node.left
+            replace_node.right = remove_node.right
+            return True
+
 
     def remove_first(self) -> bool:
         """
@@ -253,10 +253,10 @@ class BST:
             parent_removed = node_removed  # Sets the parent to the node to be removed.
             node_removed = node_removed.left  # Sets the node to be removed to whatever is on the left.
             left_node = True  # Sets left_node to True
-        if left_node is False:  # If left_node is False, replace right of the parent to right of removed node.
-            parent_removed.right = node_removed.right
-        else:
+        if left_node is True:  # If left_node is False, replace right of the parent to right of removed node.
             parent_removed.left = node_removed.right
+        else:
+            parent_removed.right = node_removed.right
         node_removed.left = self.root.left
         node_removed.right = self.root.right
         self.root = node_removed
@@ -333,30 +333,14 @@ class BST:
 
 if __name__ == '__main__':
 
-    """ remove_first() example 1 """
-    print("\nPDF - method remove_first() example 1")
-    print("-------------------------------------")
-    tree = BST([10, 15, 5])
-    print(tree.remove_first())
-    print(tree)
+    tree = BST([10, 5, 15])
+    print(tree.remove(7))
+    print(tree.remove(15))
+    print(tree.remove(15))
 
-    """ remove_first() example 2 """
-    print("\nPDF - method remove_first() example 2")
-    print("-------------------------------------")
-    tree = BST([10, 20, 5, 15, 17, 7])
-    print(tree.remove_first())
+    tree = BST([10, 5, 7, 20, 18, 12, 18, 27, 22, 24, 22, 30])
+    print(tree.remove(20))
     print(tree)
-
-    """ remove_first() example 3 """
-    print("\nPDF - method remove_first() example 3")
-    print("-------------------------------------")
-    tree = BST([10, 10, -1, 5, -1])
-    print(tree.remove_first(), tree)
-    print(tree.remove_first(), tree)
-    print(tree.remove_first(), tree)
-    print(tree.remove_first(), tree)
-    print(tree.remove_first(), tree)
-    print(tree.remove_first(), tree)
 
     """ Traversal methods example 1 """
     print("\nPDF - traversal methods example 1")
