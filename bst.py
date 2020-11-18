@@ -155,17 +155,17 @@ class BST:
         """
         Returns True if the value parameter is in the BinaryTree or False if its not in the tree.
         """
+
+        # iterate through tree in search of value
         start_obj = self.root
         while start_obj is not None:
-            if start_obj.value < value:  # If object is greater than value add it to the left.
-                if start_obj.value != value:  # If object's value is not equal to the value move to next value.
-                    start_obj = start_obj.left
-            if start_obj.value > value:
-                if start_obj.value != value:  # If object's value is not equal to the value move to next value.
-                    start_obj = start_obj.right
-            else:  # If object's value is  equal to the value, return True.
+            if value == start_obj.value:  # If the value was found, return True.
                 return True
-        return False  # Once out of the loop (start_obj is None) return False.
+            elif value < start_obj.value:  # If value is less than value add it to the left.
+                start_obj = start_obj.left
+            else:  # If value is greater than value add it to the right.
+                start_obj = start_obj.right
+        return False
 
     def get_first(self) -> object:
         """
