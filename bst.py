@@ -174,19 +174,93 @@ class BST:
         else:  # Else return None as the BinaryTree is empty.
             return None
 
+
     def remove(self, value) -> bool:
         """
         Remove the first instance of the object in the BinaryTree.
         Returns True if the value is removed from the BinaryTree, otherwise returns False.
         """
-        if self.root is None:  # Return False if the BinaryTree is empty.
+        left_right = False  # Left is True, Right is False.
+        is_node = False  # Determines whether the value is on the BinaryTree or not.
+        parent_node = None
+        remove_node = self.root
+        while remove_node is not None and not is_node:  # Iterates through the tree to find the value.
+            if value == remove_node.value:  # If the value is found set is_node to True.
+                is_node = True
+            elif value < self.root.value:  # If the value is less than the root.
+                parent_node = remove_node
+                remove_node = remove_node.left
+                left_right = True
+            else:  # If the value is greater than the root.
+                parent_node = remove_node
+                remove_node = remove_node.right
+        if is_node is False:  # If the value is not on BinaryTree return False.
             return False
+        if remove_node == self.root:  # If the value is a root.
+            self.remove_first()
+            return True
+        if self.root.left is None and self.root.right is None and left_right:  # If the value is a leaf.
+            parent_node.left = None
+            return True
+        if self.root.left is None and self.root.right is None and not left_right:  # If the value is a leaf.
+            parent_node.right = None
+            return True
+        if remove_node.right is None and left_right:  # Removing from when only a left.
+            parent_node.left = remove_node.left
+            return True
+        if remove_node.right is None and not left_right:
+            parent_node.right = remove_node.left
+            return True
+        replace_node = remove_node.right
+        replace_parent = remove_node
+        left_right = False  # Resets left_right node.
+        while replace_node.left is not None:  # Removing from when right subtree.
+            replace_parent = replace_node
+            replace_node = replace_node.left
+            left_right = True
+        if left_right is False:
+            replace_parent.right = replace_node.right
+        if left_right:
+            replace_parent.left = replace_node.right
+        if left_right is False:
+            parent_node.right = replace_node
+            replace_node.left = remove_node.left
+            replace_node.right = remove_node.right
+            return True
+        if left_right:
+            parent_node.left = replace_node
+            replace_node.left = remove_node.left
+            replace_node.right = remove_node.right
+            return True
 
     def remove_first(self) -> bool:
         """
         Remove the first instance of the object in the BinaryTree.
         Returns True if the value is removed from the BinaryTree, otherwise returns False.
         """
+        if self.root is None:  # If BinaryTree is empty, return False.
+            return False
+        if TreeNode(self).left is None and TreeNode(self) is None:  # If root is leaf, set to None and return True.
+            self.root = None
+            return True
+        if self.root.right is None:  # When there's only left subtree, replace and return True.
+            self.root = self.root.left
+            return True
+        node_removed = self.root.right
+        parent_removed = self.root
+        left_node = False
+        while node_removed.left is not None:  # When there is a right subtree.
+            parent_removed = node_removed  # Sets the parent to the node to be removed.
+            node_removed = node_removed.left  # Sets the node to be removed to whatever is on the left.
+            left_node = True  # Sets left_node to True
+        if left_node is False:  # If left_node is False, replace right of the parent to right of removed node.
+            parent_removed.right = node_removed.right
+        else:
+            parent_removed.left = node_removed.right
+        node_removed.left = self.root.left
+        node_removed.right = self.root.right
+        self.root = node_removed
+        return True
 
     def pre_order_traversal(self) -> Queue:
         """
@@ -258,21 +332,6 @@ class BST:
 # BASIC TESTING - PDF EXAMPLES
 
 if __name__ == '__main__':
-
-    """ remove() example 1 """
-    print("\nPDF - method remove() example 1")
-    print("-------------------------------")
-    tree = BST([10, 5, 15])
-    print(tree.remove(7))
-    print(tree.remove(15))
-    print(tree.remove(15))
-
-    """ remove() example 2 """
-    print("\nPDF - method remove() example 2")
-    print("-------------------------------")
-    tree = BST([10, 20, 5, 15, 17, 7, 12])
-    print(tree.remove(20))
-    print(tree)
 
     """ remove_first() example 1 """
     print("\nPDF - method remove_first() example 1")
