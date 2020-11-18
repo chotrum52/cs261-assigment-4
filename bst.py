@@ -12,6 +12,7 @@ class Stack:
     DO NOT CHANGE THIS CLASS IN ANY WAY
     YOU ARE ALLOWED TO CREATE AND USE OBJECTS OF THIS CLASS IN YOUR SOLUTION
     """
+
     def __init__(self):
         """ Initialize empty stack based on Python list """
         self._data = []
@@ -46,6 +47,7 @@ class Queue:
     DO NOT CHANGE THIS CLASS IN ANY WAY
     YOU ARE ALLOWED TO CREATE AND USE OBJECTS OF THIS CLASS IN YOUR SOLUTION
     """
+
     def __init__(self):
         """ Initialize empty queue based on Python list """
         self._data = []
@@ -73,14 +75,15 @@ class TreeNode:
     Binary Search Tree Node class
     DO NOT CHANGE THIS CLASS IN ANY WAY
     """
+
     def __init__(self, value: object) -> None:
         """
         Init new Binary Search Tree
         DO NOT CHANGE THIS METHOD IN ANY WAY
         """
-        self.value = value          # to store node's data
-        self.left = None            # pointer to root of left subtree
-        self.right = None           # pointer to root of right subtree
+        self.value = value  # to store node's data
+        self.left = None  # pointer to root of left subtree
+        self.right = None  # pointer to root of right subtree
 
     def __str__(self):
         return str(self.value)
@@ -169,7 +172,7 @@ class BST:
         Returns the value stored at the root node. If the BinaryTree is empty, this method returns None.
         """
         if self.root is not None:  # If the Root is not equal to node, return it.
-            return self.root
+            return self.root.value
         else:  # Else return None as the BinaryTree is empty.
             return None
 
@@ -181,13 +184,11 @@ class BST:
         if self.root is None:  # Return False if the BinaryTree is empty.
             return False
 
-
     def remove_first(self) -> bool:
         """
         Remove the first instance of the object in the BinaryTree.
         Returns True if the value is removed from the BinaryTree, otherwise returns False.
         """
-
 
     def pre_order_traversal(self) -> Queue:
         """
@@ -254,7 +255,6 @@ class BST:
         TODO: Write this implementation
         """
         return 0
-
 
 
 # BASIC TESTING - PDF EXAMPLES
