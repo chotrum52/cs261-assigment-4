@@ -155,8 +155,6 @@ class BST:
         """
         Returns True if the value parameter is in the BinaryTree or False if its not in the tree.
         """
-
-        # iterate through tree in search of value
         start_obj = self.root
         while start_obj is not None:
             if value == start_obj.value:  # If the value was found, return True.
