@@ -179,60 +179,60 @@ class BST:
         Remove the first instance of the object in the BinaryTree.
         Returns True if the value is removed from the BinaryTree, otherwise returns False.
         """
-        left_right = False  # Left is True, Right is False.
-        is_node = False  # Determines whether the value is on the BinaryTree or not.
-        parent_node = None
-        remove_node = self.root
-        while remove_node is not None and is_node is False:  # Iterates through the tree to find the value.
-            if value == remove_node.value:  # If the value is found set is_node to True.
-                is_node = True
-            elif value < self.root.value:  # If the value is less than the root.
-                parent_node = remove_node
-                remove_node = remove_node.left
-                left_right = True
+        the_parent = None  # Set parent_node to None.
+        the_victim = self.root  # Sets remove_node to root (used to find actual node)
+        first_indicator = False  # Left is True, Right is False.
+        in_list_value = False  # Determines whether the value is on the BinaryTree or not.
+        while the_victim is not None and in_list_value is False:  # Iterates through the tree to find the value.
+            if value == the_victim.value:  # If the value is found set is_node to True.
+                in_list_value = True
+            elif value < the_victim.value:  # If the value is less than the root.
+                the_parent = the_victim
+                the_victim = the_victim.left
+                first_indicator = True
             else:  # If the value is greater than the root.
-                parent_node = remove_node
-                remove_node = remove_node.right
-                left_right = False
-        if is_node is False:  # If the value is not on BinaryTree return False.
+                the_parent = the_victim
+                the_victim = the_victim.right
+                first_indicator = False
+        if in_list_value is False:  # If the value is not on BinaryTree return False.
             return False
-        if remove_node == self.root:  # If the value is a root.
+        if the_victim == self.root:  # If the value is a root.
             self.remove_first()
             return True
-        if remove_node.left is None and remove_node.right is None and left_right is True:  # If the value is a leaf.
-            parent_node.left = None
+        if the_victim.left is None and the_victim.right is None and first_indicator is True:  # If the value is a leaf.
+            the_parent.left = None
             return True
-        if remove_node.left is None and remove_node.right is None and left_right is False:  # If the value is a leaf.
-            parent_node.right = None
+        if the_victim.left is None and the_victim.right is None and first_indicator is False:  # If the value is a leaf.
+            the_parent.right = None
             return True
-        if remove_node.right is None and left_right:  # Removing from when only a left.
-            parent_node.left = remove_node.left
+        if the_victim.right is None and first_indicator:  # Removing from when only a left.
+            the_parent.left = the_victim.left
             return True
-        if remove_node.right is None and left_right is False:
-            parent_node.right = remove_node.left
+        if the_victim.right is None and first_indicator is False:
+            the_parent.right = the_victim.left
             return True
-        replace_node = remove_node.right
-        replace_parent = remove_node
-        right_left = False  # Resets right_left node.
+        second_indicator = False  # Sets right_left node.
+        replace_node = the_victim.right
+        replace_parent = the_victim
         while replace_node.left is not None:  # Removing from when right subtree.
             replace_parent = replace_node
             replace_node = replace_node.left
-            right_left = True
-        if right_left:
+            second_indicator = True
+        if second_indicator is True:
             replace_parent.left = replace_node.right
             return True
-        if right_left is False:
+        if second_indicator is False:
             replace_parent.right = replace_node.right
             return True
-        if left_right:
-            parent_node.left = replace_node
-            replace_node.left = remove_node.left
-            replace_node.right = remove_node.right
+        if first_indicator is True:
+            the_parent.left = replace_node
+            replace_node.left = the_victim.left
+            replace_node.right = the_victim.right
             return True
-        if left_right is False:
-            parent_node.right = replace_node
-            replace_node.left = remove_node.left
-            replace_node.right = remove_node.right
+        if first_indicator is False:
+            the_parent.right = replace_node
+            replace_node.left = the_victim.left
+            replace_node.right = the_victim.right
             return True
 
     def remove_first(self) -> bool:
@@ -335,12 +335,7 @@ class BST:
 
 if __name__ == '__main__':
 
-    tree = BST([10, 5, 15])
-    print(tree.remove(7))
-    print(tree.remove(15))
-    print(tree.remove(15))
-
-    tree = BST([10, 5, 7, 20, 18, 12, 18, 27, 22, 24, 22, 30])
+    tree = BST([7, 5, 12, 18, 18, 22, 24, 22, 30, 27, 20, 100])
     print(tree.remove(20))
     print(tree)
 
