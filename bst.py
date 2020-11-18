@@ -207,7 +207,7 @@ class BST:
         if remove_node.right is None and left_right:  # Removing from when only a left.
             parent_node.left = remove_node.left
             return True
-        if remove_node.right is None and not left_right:
+        if remove_node.right is None and left_right is False:
             parent_node.right = remove_node.left
             return True
         replace_node = remove_node.right
@@ -217,18 +217,18 @@ class BST:
             replace_parent = replace_node
             replace_node = replace_node.left
             right_left = True
-        if right_left is False:
-            replace_parent.right = replace_node.right
-            return True
         if right_left:
             replace_parent.left = replace_node.right
+            return True
+        if right_left is False:
+            replace_parent.right = replace_node.right
             return True
         if left_right:
             parent_node.left = replace_node
             replace_node.left = remove_node.left
             replace_node.right = remove_node.right
             return True
-        if left_right:
+        if left_right is False:
             parent_node.right = replace_node
             replace_node.left = remove_node.left
             replace_node.right = remove_node.right
