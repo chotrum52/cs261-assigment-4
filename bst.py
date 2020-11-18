@@ -183,7 +183,7 @@ class BST:
         is_node = False  # Determines whether the value is on the BinaryTree or not.
         parent_node = None
         remove_node = self.root
-        while remove_node is not None and not is_node:  # Iterates through the tree to find the value.
+        while remove_node is not None and is_node is False:  # Iterates through the tree to find the value.
             if value == remove_node.value:  # If the value is found set is_node to True.
                 is_node = True
             elif value < self.root.value:  # If the value is less than the root.
@@ -193,6 +193,7 @@ class BST:
             else:  # If the value is greater than the root.
                 parent_node = remove_node
                 remove_node = remove_node.right
+                left_right = False
         if is_node is False:  # If the value is not on BinaryTree return False.
             return False
         if remove_node == self.root:  # If the value is a root.
