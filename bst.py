@@ -182,6 +182,7 @@ class BST:
         the_parent = None  # Set parent_node to None.
         the_victim = self.root  # Sets remove_node to root (used to find actual node)
         first_indicator = False  # Left is True, Right is False.
+        second_indicator = False  # Sets second_indicator node.
         in_list_value = False  # Determines whether the value is on the BinaryTree or not.
         while the_victim is not None and in_list_value is False:  # Iterates through the tree to find the value.
             if value == the_victim.value:  # If the value is found set is_node to True.
@@ -211,7 +212,6 @@ class BST:
         if the_victim.right is None and first_indicator is False:
             the_parent.right = the_victim.left
             return True
-        second_indicator = False  # Sets right_left node.
         replace_node = the_victim.right
         replace_parent = the_victim
         while replace_node.left is not None:  # Removing from when right subtree.
@@ -262,29 +262,81 @@ class BST:
         self.root = node_removed
         return True
 
-    def pre_order_traversal(self) -> Queue:
+    def pre_order_traversal_helper(self, node, new_queue):
         """
-        TODO: Write this implementation
+        Helper function for pre_order_traversal.
         """
-        return Queue()
+        new_queue.enqueue(node)
+        if node.left is not None:  # Navigates through the left.
+            self.pre_order_traversal_helper(node.left, new_queue)
+        if node.right is not None:  # Navigates through the right.
+            self.pre_order_traversal_helper(node.right, new_queue)
+
+    def pre_order_traversal(self):
+        """
+        Performs Pre-Order traversal of the tree and returns queue that contains the values of the visited node.
+        """
+        new_queue = Queue()
+        if self.root is None:  # If tree is empty return new queue.
+            return new_queue
+        self.pre_order_traversal_helper(self.root, new_queue)
+        return new_queue
 
     def in_order_traversal(self) -> Queue:
         """
-        TODO: Write this implementation
+        Performs In-Order traversal of the tree and returns queue that contains the values of the visited node.
         """
-        return Queue()
+        new_queue = Queue()
+        if self.root is None:  # If tree is empty return new queue.
+            return new_queue
+        self.in_order_traversal_helper(self.root, new_queue)
+        return new_queue
+
+    def in_order_traversal_helper(self, node, new_queue):
+        """
+        Helper function for in_order_traversal.
+        """
+        if node.left is not None:  # If there's a left side.
+            self.in_order_traversal_helper(node.left, new_queue)
+        new_queue.enqueue(node)   # Root.
+        if node.right is not None:  # If there's a right side.
+            self.in_order_traversal_helper(node.right, new_queue)
 
     def post_order_traversal(self) -> Queue:
         """
-        TODO: Write this implementation
+        Performs Post-Order traversal of the tree and returns queue that contains the values of the visited node.
         """
-        return Queue()
+        new_queue = Queue()
+        if self.root is None:  # If tree is empty return new queue.
+            return new_queue
+        self.post_order_traversal_helper(self.root, new_queue)
+        return new_queue
+
+    def post_order_traversal_helper(self, node, new_queue):
+        """
+        Helper function for post_order_traversal.
+        """
+        if node.left is not None:  # If there's a left side.
+            self.in_order_traversal_helper(node.left, new_queue)
+        if node.right is not None:  # If there's a right side.
+            self.in_order_traversal_helper(node.right, new_queue)
+        new_queue.enqueue(node)   # Root.
 
     def by_level_traversal(self) -> Queue:
         """
-        TODO: Write this implementation
+        Performs By-Level traversal of the tree and returns queue that contains the values of the visited node.
         """
-        return Queue()
+        new_queue = Queue()
+        if self.root is None:  # If tree is empty return new queue.
+            return new_queue
+        self.by_level_traversal_helper(self.root, new_queue)
+        return new_queue
+
+    def by_level_traversal_helper(self, node, new_queue):
+        """
+        Helper function for by_level_traversal.
+        """
+        pass
 
     def is_full(self) -> bool:
         """
@@ -332,10 +384,6 @@ class BST:
 # BASIC TESTING - PDF EXAMPLES
 
 if __name__ == '__main__':
-
-    tree = BST(["IZ", "D", "GP", "GP", "ZL", "KM", "TQ", "Y"])
-    print(tree.remove("D"))
-    print(tree)
 
     """ Traversal methods example 1 """
     print("\nPDF - traversal methods example 1")
