@@ -430,7 +430,6 @@ class BST:
         #     position += 1
         #     node = self.root
 
-
     def is_complete(self) -> bool:
         """
         TODO: Write this implementation
@@ -443,7 +442,7 @@ class BST:
         """
         if self.root is None:  # If BinaryTree is empty return True.
             return True
-        if self.root is not None and self.root.right is None and self.root.left is None:  # If root is only node.
+        if self.root.right is None and self.root.left is None:  # If root is only node.
             return True
         return self.is_full_helper(self.root)
 
@@ -451,9 +450,11 @@ class BST:
         """
         Helper function for is_full.
         """
-        if node.right is None or node.left is None:  # Node is leaf.
+        if node.right is None and  node.left is None:  # Node is leaf.
             return True
-        if node.left is None and node.right is not None or node.left is not None and node.right is None:
+        if node.left is None and node.right is not None:
+            return False
+        if node.left is not None and node.right is None:
             return False
         return True and self.is_full_helper(node.left) and self.is_full_helper(node.right)
 
@@ -475,7 +476,7 @@ class BST:
         """
         if start_point == end_point:
             return True
-        if node.left is None or node.right is None:
+        if node.left is None and node.right is None:
             return False
         return self.is_perfect_helper(node.left, start_point + 1, end_point) and self.is_perfect_helper(node.right, start_point + 1, end_point)
 
