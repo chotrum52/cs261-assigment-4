@@ -411,7 +411,7 @@ class BST:
 
     def count_unique(self) -> int:
         """
-        Returns the count of unique values stored in the tree.
+        Returns the count of unique values stored in the tree..
         """
         if self.root is None:  # If BinaryTree is empty return 0.
             return 0
