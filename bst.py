@@ -262,6 +262,16 @@ class BST:
         self.root = node_removed
         return True
 
+    def pre_order_traversal(self):
+        """
+        Performs Pre-Order traversal of the tree and returns queue that contains the values of the visited node.
+        """
+        new_queue = Queue()  # Sets new_queue to an empty Queue, this is to be returned.
+        if self.root is None:  # If tree is empty return new queue.
+            return new_queue
+        self.pre_order_traversal_helper(self.root, new_queue)
+        return new_queue
+
     def pre_order_traversal_helper(self, node, new_queue):
         """
         Helper function for pre_order_traversal.
@@ -272,21 +282,11 @@ class BST:
         if node.right is not None:  # Navigates through the right.
             self.pre_order_traversal_helper(node.right, new_queue)
 
-    def pre_order_traversal(self):
-        """
-        Performs Pre-Order traversal of the tree and returns queue that contains the values of the visited node.
-        """
-        new_queue = Queue()
-        if self.root is None:  # If tree is empty return new queue.
-            return new_queue
-        self.pre_order_traversal_helper(self.root, new_queue)
-        return new_queue
-
     def in_order_traversal(self) -> Queue:
         """
         Performs In-Order traversal of the tree and returns queue that contains the values of the visited node.
         """
-        new_queue = Queue()
+        new_queue = Queue()  # Sets new_queue to an empty Queue, this is to be returned.
         if self.root is None:  # If tree is empty return new queue.
             return new_queue
         self.in_order_traversal_helper(self.root, new_queue)
@@ -306,7 +306,7 @@ class BST:
         """
         Performs Post-Order traversal of the tree and returns queue that contains the values of the visited node.
         """
-        new_queue = Queue()
+        new_queue = Queue()  # Sets new_queue to an empty Queue, this is to be returned.
         if self.root is None:  # If tree is empty return new queue.
             return new_queue
         self.post_order_traversal_helper(self.root, new_queue)
@@ -316,92 +316,160 @@ class BST:
         """
         Helper function for post_order_traversal.
         """
-        if node.left is not None:  # If there's a left side.
-            self.in_order_traversal_helper(node.left, new_queue)
-        if node.right is not None:  # If there's a right side.
-            self.in_order_traversal_helper(node.right, new_queue)
-        new_queue.enqueue(node)   # Root.
+        if node.left is not None:
+            self.post_order_traversal_helper(node.left, new_queue)
+        if node.right is not None:
+            self.post_order_traversal_helper(node.right, new_queue)
+        new_queue.enqueue(node)
 
     def by_level_traversal(self) -> Queue:
         """
         Performs By-Level traversal of the tree and returns queue that contains the values of the visited node.
         """
-        new_queue = Queue()
+        og_queue = Queue()  # Creates temporary queue.
+        new_queue = Queue()  # Sets new_queue to an empty Queue, this is to be returned.
         if self.root is None:  # If tree is empty return new queue.
             return new_queue
-        self.by_level_traversal_helper(self.root, new_queue)
+        og_queue.enqueue(self.root)
+        while not og_queue.is_empty():  # Iterate while queue is not empty.
+            node = og_queue.dequeue()
+            if node is not None:
+                new_queue.enqueue(node)  #
+                og_queue.enqueue(node.left)
+                og_queue.enqueue(node.right)
         return new_queue
-
-    def by_level_traversal_helper(self, node, new_queue):
-        """
-        Helper function for by_level_traversal.
-        """
-        pass
-
-    def is_full(self) -> bool:
-        """
-        TODO: Write this implementation
-        """
-        return True
-
-    def is_complete(self) -> bool:
-        """
-        TODO: Write this implementation
-        """
-        return True
-
-    def is_perfect(self) -> bool:
-        """
-        TODO: Write this implementation
-        """
-        return True
 
     def size(self) -> int:
         """
-        TODO: Write this implementation
+        Returns the total number of nodes in a tree.
         """
-        return 0
+        if self.root is None:  # If BinaryTree is empty return 0.
+            return 0
+        if self.root is not None and self.root.right is None and self.root.left is None:  # If root is only node.
+            return 1
+        else:  # For anything else use helper.
+            return self.size_helper(self.root)
+
+    def size_helper(self, node):
+        """
+        Helper function for size.
+        """
+        count = 1  # Count starts at 1 so that each iteration adds 1.
+        if node.left is not None:  # Counts on the left.
+            count += self.size_helper(node.left)
+        if node.right is not None:  # Counts on the right.
+            count += self.size_helper(node.right)
+        return count
 
     def height(self) -> int:
+
         """
-        TODO: Write this implementation
+        Returns the height of the binary tree. Empty tree has a height of -1.
         """
-        return -1
+        if self.root is None:  # If BinaryTree is empty return -1.
+            return -1
+        if self.root is not None and self.root.right is None and self.root.left is None:  # If root is only node.
+            return 0
+        else:  # For anything else use helper.
+            return self.height_helper(self.root)
+
+    def height_helper(self, node):
+        """
+        Helper function for height.
+        """
+        if node is not None and node.left is None and node.right is None:  # When there are no children return 0.
+            return 0
+        if node.left is not None and node.right is None:  # When only left.
+            return 1 + self.height_helper(node.left)
+        if node.right is not None and node.left is None:  # When only right.
+            return 1 + self.height_helper(node.right)
+        if self.height_helper(node.left) > self.height_helper(node.right):  # When dealing with both children.
+            return 1 + self.height_helper(node.left)
+        else:
+            return 1 + self.height_helper(node.right)
 
     def count_leaves(self) -> int:
         """
-        TODO: Write this implementation
+        Returns the number of nodes in the tree that have no children.
         """
-        return 0
+        if self.root is None:  # If BinaryTree is empty return 0.
+            return 0
+        else:  # For anything else use helper.
+            return self.count_leaves_helper(self.root)
+
+    def count_leaves_helper(self, node):
+        """
+        Helper function for count_leaves.
+        """
+        if node.left is not None and node.right is None:  # When only left move to try and count on that side.
+            return self.count_leaves_helper(node.left)
+        if node.right is not None and node.left is None:  # When only right move to try and count on that side.
+            return self.count_leaves_helper(node.right)
+        if node.right is None and node.left is None:  # If node is a leaf, return 1.
+            return 1
+        return self.count_leaves_helper(node.left) + self.count_leaves_helper(node.right)
 
     def count_unique(self) -> int:
         """
         TODO: Write this implementation
         """
-        return 0
+        if self.root is None:  # If BinaryTree is empty return 0.
+            return 0
+        else:  # For anything else use helper.
+            return self.count_unique_helper(self.root)
+
+    def count_unique_helper(self, node):
+        """
+        Helper function for count_unique.
+        """
+        if node.left is not None and node.right is None:  # When only left move to try and count on that side.
+            return self.count_unique_helper(node.left)
+        if node.right is not None and node.left is None:  # When only right move to try and count on that side.
+            return self.count_unique_helper(node.right)
+        if node.right is None and node.left is None:  # If node is a leaf, return 1.
+            return 1
+        return self.count_unique_helper(node.left) + self.count_unique_helper(node.right)
+
+    def is_complete(self) -> bool:
+        """
+        TODO: Write this implementation
+        """
+        pass
+
+    def is_full(self) -> bool:
+        """
+        Returns True if the current tree is a full binary tree.
+        """
+        pass
+
+    def is_perfect(self) -> bool:
+        """
+        Returns True if the current tree is a perfect binary tree.
+        """
+        pass
+        # current_node = self.root
+        # right_node = self.root.right
+        # left_node = self.root.left
+        # if current_node is None:  # If BinaryTree is empty, return False.
+        #     return True
+        # if current_node is not None and current_node.right is None and current_node.left is None:
+        #     return True
+        # if current_node is not None and current_node.right is None or current_node.left is None:
+        #     return False
+        # else:
+        #     while current_node is not None:
+        #         if current_node.left is None or current_node.right is None:
+        #             return False
+        #         else:
+        #             right_node.right
+        #             left_node.left
+        #         return True
+
 
 
 # BASIC TESTING - PDF EXAMPLES
 
 if __name__ == '__main__':
-
-    """ Traversal methods example 1 """
-    print("\nPDF - traversal methods example 1")
-    print("---------------------------------")
-    tree = BST([10, 20, 5, 15, 17, 7, 12])
-    print(tree.pre_order_traversal())
-    print(tree.in_order_traversal())
-    print(tree.post_order_traversal())
-    print(tree.by_level_traversal())
-
-    """ Traversal methods example 2 """
-    print("\nPDF - traversal methods example 2")
-    print("---------------------------------")
-    tree = BST([10, 10, -1, 5, -1])
-    print(tree.pre_order_traversal())
-    print(tree.in_order_traversal())
-    print(tree.post_order_traversal())
-    print(tree.by_level_traversal())
 
     """ Comprehensive example 1 """
     print("\nComprehensive example 1")
@@ -454,16 +522,3 @@ if __name__ == '__main__':
     print('', tree.pre_order_traversal(), tree.in_order_traversal(),
           tree.post_order_traversal(), tree.by_level_traversal(),
           sep='\n')
-
-    """ remove() example 3 """
-    print("\nPDF - method remove() example 3")
-    print("-------------------------------")
-    tree = BST([10, 5, 20, 18, 12, 7, 27, 22, 18, 24, 22, 30])
-    print(tree.remove(20))
-    print(tree)
-    # comment out the following lines
-    # if you have not yet implemented traversal methods
-    print(tree.pre_order_traversal())
-    print(tree.in_order_traversal())
-    print(tree.post_order_traversal())
-    print(tree.by_level_traversal())
