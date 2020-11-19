@@ -411,24 +411,25 @@ class BST:
 
     def count_unique(self) -> int:
         """
-        Returns the count of unique values stored in the tree..
+        Returns the count of unique values stored in the tree.
         """
-        if self.root is None:  # If BinaryTree is empty return 0.
-            return 0
-        else:  # For anything else use helper.
-            return self.count_unique_helper(self.root)
+        return 0
+        # node = self.root
+        # count = 1
+        # position = 0
+        # if self.root is None:  # If BinaryTree is empty return 0.
+        #     return 0
+        # if self.root is not None and self.root.right is None and self.root.left is None:  # If BinaryTree is empty return 0.
+        #     return 1
+        # while position < self.size():
+        #     if self.size() == 0:
+        #         return count
+        #     while self.contains(node.value):
+        #         self.remove(node.value)
+        #     count += 1
+        #     position += 1
+        #     node = self.root
 
-    def count_unique_helper(self, node):
-        """
-        Helper function for count_unique.
-        """
-        if node.left is not None and node.right is None:  # When only left move to try and count on that side.
-            return self.count_unique_helper(node.left)
-        if node.right is not None and node.left is None:  # When only right move to try and count on that side.
-            return self.count_unique_helper(node.right)
-        if node.right is None and node.left is None:  # If node is a leaf, return 1.
-            return 1
-        return self.count_unique_helper(node.left) + self.count_unique_helper(node.right)
 
     def is_complete(self) -> bool:
         """
@@ -440,30 +441,43 @@ class BST:
         """
         Returns True if the current tree is a full binary tree.
         """
-        pass
+        if self.root is None:  # If BinaryTree is empty return True.
+            return True
+        if self.root is not None and self.root.right is None and self.root.left is None:  # If root is only node.
+            return True
+        return self.is_full_helper(self.root)
+
+    def is_full_helper(self, node):
+        """
+        Helper function for is_full.
+        """
+        if node.right is None or node.left is None:  # Node is leaf.
+            return True
+        if node.left is None and node.right is not None or node.left is not None and node.right is None:
+            return False
+        return True and self.is_full_helper(node.left) and self.is_full_helper(node.right)
 
     def is_perfect(self) -> bool:
         """
         Returns True if the current tree is a perfect binary tree.
         """
-        pass
-        # current_node = self.root
-        # right_node = self.root.right
-        # left_node = self.root.left
-        # if current_node is None:  # If BinaryTree is empty, return False.
-        #     return True
-        # if current_node is not None and current_node.right is None and current_node.left is None:
-        #     return True
-        # if current_node is not None and current_node.right is None or current_node.left is None:
-        #     return False
-        # else:
-        #     while current_node is not None:
-        #         if current_node.left is None or current_node.right is None:
-        #             return False
-        #         else:
-        #             right_node.right
-        #             left_node.left
-        #         return True
+        start_point = 0
+        end_point = self.height()
+        if self.root is None:  # If BinaryTree is empty return True.
+            return True
+        if self.root is not None and self.root.right is None or self.root.left is None:  # Root is leaf.
+            return False
+        return self.is_perfect_helper(self.root, start_point, end_point)
+
+    def is_perfect_helper(self, node, start_point, end_point):
+        """
+        Helper function for is_perfect.
+        """
+        if start_point == end_point:
+            return True
+        if node.left is None or node.right is None:
+            return False
+        return self.is_perfect_helper(node.left, start_point + 1, end_point) and self.is_perfect_helper(node.right, start_point + 1, end_point)
 
 
 
