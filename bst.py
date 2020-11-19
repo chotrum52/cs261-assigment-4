@@ -442,7 +442,7 @@ class BST:
         """
         if self.root is None:  # If BinaryTree is empty return True.
             return True
-        if self.root.right is None and self.root.left is None:  # If root is only node.
+        if self.root.right is None and self.root.left is None:
             return True
         return self.is_full_helper(self.root)
 
@@ -466,8 +466,6 @@ class BST:
         end_point = self.height()
         if self.root is None:  # If BinaryTree is empty return True.
             return True
-        if self.root is not None and self.root.right is None or self.root.left is None:  # Root is leaf.
-            return False
         return self.is_perfect_helper(self.root, start_point, end_point)
 
     def is_perfect_helper(self, node, start_point, end_point):
@@ -476,11 +474,11 @@ class BST:
         """
         if start_point == end_point:
             return True
-        if node.left is None and node.right is None:
+        if node.left is None or node.right is None:
             return False
-        return self.is_perfect_helper(node.left, start_point + 1, end_point) and self.is_perfect_helper(node.right, start_point + 1, end_point)
-
-
+        return self.is_perfect_helper(node.left, start_point + 1, end_point) and self.is_perfect_helper(node.right,
+                                                                                                        start_point + 1,
+                                                                                                        end_point)
 
 # BASIC TESTING - PDF EXAMPLES
 
