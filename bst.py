@@ -316,27 +316,18 @@ class BST:
         """
         Helper function for post_order_traversal.
         """
-        if node.left is not None:  # If there's a left side.
-            self.in_order_traversal_helper(node.left, new_queue)
-        if node.right is not None:  # If there's a right side.
-            self.in_order_traversal_helper(node.right, new_queue)
-        new_queue.enqueue(node)   # Root.
+        if node.left is not None:
+            self.post_order_traversal_helper(node.left, new_queue)
+        if node.right is not None:
+            self.post_order_traversal_helper(node.right, new_queue)
+        new_queue.enqueue(node)
 
     def by_level_traversal(self) -> Queue:
         """
         Performs By-Level traversal of the tree and returns queue that contains the values of the visited node.
         """
         new_queue = Queue()
-        if self.root is None:  # If tree is empty return new queue.
-            return new_queue
-        self.by_level_traversal_helper(self.root, new_queue)
         return new_queue
-
-    def by_level_traversal_helper(self, node, new_queue):
-        """
-        Helper function for by_level_traversal.
-        """
-        pass
 
     def is_full(self) -> bool:
         """
